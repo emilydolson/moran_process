@@ -13,6 +13,8 @@ library(stringr)
 library(readr)
 library(ggplot2)
 
+# Load data
+
 fileNames <- Sys.glob("data/*/*/*.csv")
 df <- data.frame()
 for (file in fileNames) {
@@ -21,10 +23,13 @@ for (file in fileNames) {
   temp$time <- row.names(temp)
   df <- rbind(df, temp)
 }
+```
 
-df <- df %>% rowwise() %>% mutate(r=str_split(filename, "/")[[1]][4], seed=unlist(str_split(filename, "/"))[5])
+```{r}
+# Extract parameter values into their own columns
+df <- df %>% rowwise() %>% mutate(r=str_split(filename, "/")[[1]][2], seed=unlist(str_split(filename, "/"))[3])
+
+# Plot data
 ggplot(data=df) + stat_summary(aes(y=A, x=Time, color=r, fill=r), fun.data="mean_cl_boot", geom="smooth", se=TRUE) + theme_classic()
-
-
 ```
 
