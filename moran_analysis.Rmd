@@ -27,9 +27,9 @@ for (file in fileNames) {
 
 ```{r}
 # Extract parameter values into their own columns
-df <- df %>% rowwise() %>% mutate(r=str_split(filename, "/")[[1]][2], seed=unlist(str_split(filename, "/"))[3])
+df <- df %>% rowwise() %>% mutate(r=str_extract(str_split(filename, "/")[[1]][2], "r_.*_"), n=str_extract(str_split(filename, "/")[[1]][2], "n_.*_"), seed=unlist(str_split(filename, "/"))[3])
 
 # Plot data
-ggplot(data=df) + stat_summary(aes(y=A, x=Time, color=r, fill=r), fun.data="mean_cl_boot", geom="smooth", se=TRUE) + theme_classic()
+ggplot(data=df) + stat_summary(aes(y=A, x=Time, color=r, fill=r), fun.data="mean_cl_boot", geom="smooth", se=TRUE) + theme_classic() + facet_wrap(~n, scales = "free_y")
 ```
 

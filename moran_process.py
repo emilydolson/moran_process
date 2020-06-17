@@ -7,10 +7,11 @@ def main():
 
     # Get arguments from parser
     args = get_args()
-    n_A = args.inital_a
     N = args.N
+    n_A = args.inital_a * N
     r = args.r
     gens = args.generations
+    random.seed(args.seed)
 
     # Initialize empty list to store data
     data = []
@@ -39,14 +40,16 @@ def get_args():
     """
 
     parser = argparse.ArgumentParser(description='Load settings for model.')
-    parser.add_argument("-a", "--inital_a", default=500, type=int,
-                        help="Initial population size of A")
+    parser.add_argument("-a", "--inital_a", default=.5, type=float,
+                        help="Initial proportion of population of type A")
     parser.add_argument("-N", "--N", default=1000, type=int,
                         help="Total population size")
     parser.add_argument("-r", "--r", default=1, type=float,
                         help="Fitness difference between A and B")
     parser.add_argument("-g", "--generations", default=1000, type=int,
                         help="Number of generations to run for")
+    parser.add_argument("-s", "--seed", type=int,
+                        help="Random seed")
 
     return parser.parse_args()
 
